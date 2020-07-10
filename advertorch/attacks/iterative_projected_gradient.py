@@ -114,7 +114,7 @@ def perturb_iterative(xvar, yvar, predict, nb_iter, eps, eps_iter, loss_fn,
         delta.grad.data.zero_()
 
     x_adv = clamp(xvar + delta, clip_min, clip_max)
-    return x_adv
+    return x_adv, outputs
 
 
 class PGDAttack(Attack, LabelMixin):
@@ -189,7 +189,7 @@ class PGDAttack(Attack, LabelMixin):
             l1_sparsity=self.l1_sparsity,
         )
 
-        return rval.data
+        return rval.data, outputs
 
 
 class LinfPGDAttack(PGDAttack):
