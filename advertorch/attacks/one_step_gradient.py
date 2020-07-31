@@ -46,7 +46,7 @@ class GradientSignAttack(Attack, LabelMixin):
         if self.loss_fn is None:
             self.loss_fn = nn.CrossEntropyLoss(reduction="sum")
 
-    def perturb(self, x, y=None):
+    def perturb(self, x, y=None, x_ft=None):
         """
         Given examples (x, y), returns their adversarial counterparts with
         an attack length of eps.
@@ -61,7 +61,7 @@ class GradientSignAttack(Attack, LabelMixin):
 
         x, y = self._verify_and_process_inputs(x, y)
         xadv = x.requires_grad_()
-        outputs = self.predict(xadv)
+        outputs = self.predict(xadv, x_ft)
 
         loss = self.loss_fn(outputs, y)
         if self.targeted:
@@ -105,7 +105,7 @@ class GradientAttack(Attack, LabelMixin):
         if self.loss_fn is None:
             self.loss_fn = nn.CrossEntropyLoss(reduction="sum")
 
-    def perturb(self, x, y=None):
+    def perturb(self, x, y=None, x_ft=None):
         """
         Given examples (x, y), returns their adversarial counterparts with
         an attack length of eps.
@@ -119,7 +119,7 @@ class GradientAttack(Attack, LabelMixin):
         """
         x, y = self._verify_and_process_inputs(x, y)
         xadv = x.requires_grad_()
-        outputs = self.predict(xadv)
+        outputs = self.predict(xadv, x_ft)
 
         loss = self.loss_fn(outputs, y)
         if self.targeted:
